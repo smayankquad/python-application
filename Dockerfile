@@ -17,7 +17,7 @@ COPY . /code/
 # Expose port 8000
 EXPOSE 8000
 
+RUN python setup.py
 
-RUN python manage.py runscript setup
 # Run migrations and start the server
 CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000
