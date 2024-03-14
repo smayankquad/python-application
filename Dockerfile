@@ -25,10 +25,10 @@ COPY . /code/
 RUN chmod +x /code/migration.sh /code/setup.sh 
 
 # Run the first script
-RUN /code/setup.sh 
+RUN /code/migration.sh
 
 # Run the second script
-RUN /code/migration.sh
+RUN /code/setup.sh
 
 # Expose port 8000
 EXPOSE 8000
