@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'HMS.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgress',
+        'NAME': 'postgres',
         'USER': 'hitest',
         'PASSWORD': '@KalEl123@',
         'HOST': 'testdsaf.postgres.database.azure.com',
