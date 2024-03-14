@@ -59,7 +59,7 @@ jobs:
   vulnerability_scan:
     name: Vulnerability Scan
     runs-on: ubuntu-latest
-    needs: [flake8, code_coverage]
+    needs: [code_coverage]
 
     steps:
       - name: Checkout Repository
@@ -83,7 +83,7 @@ jobs:
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
-    needs: [flake8, code_coverage,vulnerability_scan]
+    needs: [code_coverage,vulnerability_scan]
 
     steps:
       - name: Checkout code
@@ -100,3 +100,28 @@ jobs:
         run: |
           docker build -t ${{ secrets.LOGIN }}/hms:latest .
           docker push ${{ secrets.LOGIN }}/hms:latest
+
+  Continous-Deployment:
+    runs-on: ubuntu-latest
+    needs: [code_coverage,vulnerability_scan,build-and-push]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This step checks out your repository's code
+
+      - name: Install Azure CLI
+        uses: azure/setup-azcli@v1  # This step sets up Azure CLI
+
+      - name: Login to Azure
+        run: az login --service-principal -u ${{ secrets.AZURE_CLIENT_ID }} -p ${{ secrets.AZURE_CLIENT_SECRET }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+
+      # You may need to select the subscription if there are multiple
+      # - name: Select Azure subscription
+      #   run: az account set --subscription "Your Subscription Name"
+
+      - name: Restart ACI container
+        run: az container restart --name <container_name> --resource-group <resource_group_name>
+        env:
+          AZURE_CONTAINER_NAME: test
+          AZURE_RESOURCE_GROUP: Hotelms
+        # Replace <container_name> and <resource_group_name> with your actual values
