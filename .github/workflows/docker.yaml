@@ -1,26 +1,26 @@
-name: Build and Push Docker Image to Azure ACR
+# name: Build and Push Docker Image to Azure ACR
 
-on:
-  push:
-    branches:
-      - main  # Change this to your main branch name
+# on:
+#   push:
+#     branches:
+#       - main  # Change this to your main branch name
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v2
       
-    - name: Login to Azure Container Registry
-      uses: azure/docker-login@v1
-      with:
-        login-server: ${{ secrets.LOGIN }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
+#     - name: Login to Azure Container Registry
+#       uses: azure/docker-login@v1
+#       with:
+#         login-server: ${{ secrets.LOGIN }}
+#         username: ${{ secrets.USERNAME }}
+#         password: ${{ secrets.PASSWORD }}
       
-    - name: Build Docker image
-      run: |
-        docker build -t ${{ secrets.LOGIN }}/hms:latest .
-        docker push ${{ secrets.LOGIN }}/hms:latest
+#     - name: Build Docker image
+#       run: |
+#         docker build -t ${{ secrets.LOGIN }}/hms:latest .
+#         docker push ${{ secrets.LOGIN }}/hms:latest
