@@ -22,5 +22,5 @@ jobs:
       
     - name: Build Docker image
       run: |
-        docker build -t hmstest.azurecr.io/HMS:latest .
-        docker push hmstest.azurecr.io/HMS:latest
+        docker build -t ${{ secrets.LOGIN }}/hms:latest .
+        docker push ${{ secrets.LOGIN }}/hms:latest
