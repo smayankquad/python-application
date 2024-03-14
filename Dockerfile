@@ -4,6 +4,14 @@ FROM python:3.9
 # Set environment variables
 ENV PYTHONUNBUFFERED 1
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        unixodbc \
+        unixodbc-dev \
+        ncat \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Set work directory
 WORKDIR /code
 
@@ -13,6 +21,14 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project files
 COPY . /code/
+
+RUN chmod +x migration.sh setup.sh 
+
+# Run the first script
+RUN setup.sh 
+
+# Run the second script
+RUN migration.sh
 
 # Expose port 8000
 EXPOSE 8000

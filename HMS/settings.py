@@ -83,15 +83,12 @@ WSGI_APPLICATION = 'HMS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'sql_server.pyodbc',  # Use 'sql_server.pyodbc' for Azure SQL
-        'NAME': 'hmstest',  # Replace with your Azure SQL database name
-        'USER': 'hitesh',        # Replace with your Azure SQL username
-        'PASSWORD': '@KalEl123@',    # Replace with your Azure SQL password
-        'HOST': 'hms-test-db.database.windows.net',  # Replace with your Azure SQL server name
-        'PORT': '1433',                     # Azure SQL doesn't use a default port
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',  # Use appropriate ODBC driver version
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgress',
+        'USER': 'hitest',
+        'PASSWORD': '@KalEl123@',
+        'HOST': 'testdsaf.postgres.database.azure.com',
+        'PORT': '5432',
     }
 }
 
