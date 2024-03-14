@@ -1,0 +1,26 @@
+name: Build and Push Docker Image to Azure ACR
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch name
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Login to Azure Container Registry
+      uses: azure/docker-login@v1
+      with:
+        login-server: "hmstest.azurecr.io"
+        username: "hmstest"
+        password: "upNpjoTDr6IRCeiLOflctH3CwohESIQGYtFaf+2BQa+ACRBFzQ6C"
+      
+    - name: Build Docker image
+      run: |
+        docker build -t hmstest.azurecr.io/HMS:latest .
+        docker push hmstest.azurecr.io/HMS:latest
