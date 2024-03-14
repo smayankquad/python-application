@@ -5,108 +5,108 @@ on:
     branches: [main]
 
 jobs:
-  # flake8:
-  #   name: Flake8 Check
-  #   runs-on: ubuntu-latest
+  flake8:
+    name: Flake8 Check
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.8
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
 
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install flake8
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
 
-  #     - name: Run Flake8
-  #       run: |
-  #         flake8 --max-line-length 120 .
+      - name: Run Flake8
+        run: |
+          flake8 --max-line-length 120 .
   
-  # code_coverage:
-  #   name: Code Coverage
-  #   runs-on: ubuntu-latest
-  #   needs: flake8
-  #   if: ${{ always() }}
+  code_coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    needs: flake8
+    if: ${{ always() }}
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.9
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install django
-  #         pip install coverage pytest
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install django
+          pip install coverage pytest
 
-  #     - name: Run tests with coverage
-  #       run: |
-  #         coverage run -m unittest discover .
+      - name: Run tests with coverage
+        run: |
+          coverage run -m unittest discover .
 
-  #     - name: coverage Report
-  #       run: |
-  #          coverage report -m
+      - name: coverage Report
+        run: |
+           coverage report -m
 
-  # vulnerability_scan:
-  #   name: Vulnerability Scan
-  #   runs-on: ubuntu-latest
-  #   needs: [code_coverage]
-  #   if: ${{ always() }}
+  vulnerability_scan:
+    name: Vulnerability Scan
+    runs-on: ubuntu-latest
+    needs: [code_coverage]
+    if: ${{ always() }}
 
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
 
-  #     - name: Set up Python
-  #       uses: actions/setup-python@v2
-  #       with:
-  #         python-version: 3.9
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
 
-  #     - name: Install dependencies
-  #       run: |
-  #         python -m pip install --upgrade pip
-  #         pip install safety
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install safety
 
-  #     - name: Run vulnerability scan
-  #       id: scan
-  #       run: |
-  #         safety check
+      - name: Run vulnerability scan
+        id: scan
+        run: |
+          safety check
   
-  # build-and-push:
-  #   name: Build and Push Docker Image
-  #   runs-on: ubuntu-latest
-  #   needs: [code_coverage,vulnerability_scan]
-  #   if: ${{ always() }}
+  build-and-push:
+    name: Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: [code_coverage,vulnerability_scan]
+    if: ${{ always() }}
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       
-  #     - name: Login to Azure Container Registry
-  #       uses: azure/docker-login@v1
-  #       with:
-  #         login-server: ${{ secrets.LOGIN }}
-  #         username: ${{ secrets.USERNAME }}
-  #         password: ${{ secrets.PASSWORD }}
+      - name: Login to Azure Container Registry
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.LOGIN }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
       
-  #     - name: Build Docker image
-  #       run: |
-  #         docker build -t ${{ secrets.LOGIN }}/hms:latest .
-  #         docker push ${{ secrets.LOGIN }}/hms:latest
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.LOGIN }}/hms:latest .
+          docker push ${{ secrets.LOGIN }}/hms:latest
 
   Continous-Deployment:
     runs-on: ubuntu-latest
-    # needs: [code_coverage,vulnerability_scan,build-and-push]
-    # if: ${{ always() }}
+    needs: [code_coverage,vulnerability_scan,build-and-push]
+    if: ${{ always() }}
 
     steps:
       - name: Checkout repository
