@@ -22,13 +22,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project files
 COPY . /code/
 
-RUN chmod +x migration.sh setup.sh 
+RUN chmod +x /code/migration.sh /code/setup.sh 
 
 # Run the first script
-RUN setup.sh 
+RUN /code/setup.sh 
 
 # Run the second script
-RUN migration.sh
+RUN /code/migration.sh
 
 # Expose port 8000
 EXPOSE 8000
