@@ -17,8 +17,8 @@ jobs:
       uses: azure/docker-login@v1
       with:
         login-server: "hmstest.azurecr.io"
-        username: "hmstest"
-        password: "upNpjoTDr6IRCeiLOflctH3CwohESIQGYtFaf+2BQa+ACRBFzQ6C"
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
       
     - name: Build Docker image
       run: |
